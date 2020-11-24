@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} - QnA_list {% endblock %}
+
+{% block content %}
+    <br />
+    <a href="{% url 'QnA:QnA_upload' %}" class="btn btn-xs btn-success" style="background-color: indianred;margin-left: 100px;">Personal QnA Upload</a>
+    <a href="{% url 'QnA:QnA_myqna' %}" class="btn btn-xs btn-success" style="background-color: indianred;margin-left: 100px;">My QnA list</a>
+    <br />
+    <br />
+    <br />
+    {% for post in QnAs %}
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 panel panel-default" style="border:2px dotted gray">
+                <button type="button" class="btn btn-xs btn-info">
+                    {{post.author.username}}</button>
+                <p>{{post.text|linebreaksbr}}</p>
+                <p class="text-right">
+                    <a href="{% url 'QnA:QnA_detail' pk=post.id %}" class="btn btn-xs btn-success">comments</a>
+                </p>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

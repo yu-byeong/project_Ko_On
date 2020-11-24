@@ -1,0 +1,79 @@
+0. 프로젝트 루트 경로 안에 app.yaml과 exe파일을 넣어둔다.
+
+1. gcloud init
+
+
+2. 사용할 sql 엔진 선택 -> 설치 후 ip주소 copy
+# INSTANCE_NAME='instance1'
+# MACHINE_TYPE='db-f1-micro'
+# REGION='us-central1'
+# gcloud sql instances create $INSTANCE_NAME --tier=$MACHINE_TYPE --region=$REGION
+> gcloud sql instances create instance1 --tier=db-f1-micro --region=us-central1
+
+
+3. SQL 루트 계정 설정 
+# 'root@%' MySQL 사용자의 비밀번호를 설정
+# PASSWORD='sql1234'
+# gcloud sql users set-password root --host=% --instance $INSTANCE_NAME --password $PASSWORD
+> gcloud sql users set-password root --host=% --instance instance1 --password sql1234
+
+4.
+gcloud sql instances describe [YOUR_INSTANCE_NAME] -> 표시되는 connection_name 기록해야함.
+
+koon-deploy:us-central1:instance1
+
+5. 
+# 데이터베이스를 생성
+# DATABASE_NAME='django_db'
+# CHARSET='utf8'
+# COLLATION='utf8_general_ci'
+# gcloud sql databases create $DATABASE_NAME --instance=$INSTANCE_NAME --charset=$CHARSET --collation=$COLLATION
+> gcloud sql databases create django_db --instance=instance1 --charset=utf8 --collation=utf8_general_ci
+
+6. 
+# DB 사용자 생성
+# PASSWORD='sql1234'
+# USER_NAME='django_user'
+# HOST='%'
+# gcloud sql users create $USER_NAME --host=$HOST --instance=$INSTANCE_NAME --password=$PASSWORD
+> gcloud sql users create django_user --host=% --instance=instance1 --password=sql1234
+
+7. DB사용자를 나열
+# gcloud sql users list --instance=$INSTANCE_NAME
+gcloud sql users list --instance=instance1
+
+8. 프록시 세팅
+# Cloud SQL 프록시를 시작
+# 로컬 컴퓨터에서 앱 실행을 위해 새로운 Google Cloud SDK Shell 창을 오픈하여 프록시를 시작
+# 우분투에서는 백그라운드로 시작
+cloud_sql_proxy -instances="koon-deploy:us-central1:instance1"=tcp:3306
+
+9. Django 세팅  (cmd 새로 열기)
+	 
+      %--settings.py--%
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/oztut-293903:us-central1:instance1',
+            'USER': 'django_user',
+            'PASSWORD': 'sql1234',
+            'NAME': 'django_db',
+        }
+    }
+
+    # 격리된 Python 환경을 만들고 종속 항목을 설치
+    # !virtualenv env
+    # !source env/bin/activate
+    > pip install -r requirements.txt
+
+    # Django 마이그레이션을 실행하여 모델을 설정
+     > python manage.py makemigrations
+     > python manage.py makemigrations polls 
+     > python manage.py migrate
+     
+10. 배포
+    python manage.py collectstatic
+    gcloud app deploy   (target_url 기록해 둘 것)
+    
+
+[공식문서] https://cloud.google.com/python/django/appengine?hl=ko#windows-64-bit

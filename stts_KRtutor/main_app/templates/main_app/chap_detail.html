@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %} -chap_detail {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chapter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .chap_LV#box1{
+            background: url({% static 'img/대화1_1.PNG' %})no-repeat;
+        }
+        .chap_LV#box2{
+            background: url({% static 'img/대화2_1.PNG' %})no-repeat;
+        }
+        .chap_LV#box1:hover{
+            background: url({% static 'img/대화1.PNG' %})no-repeat;
+        }
+        .chap_LV#box2:hover{
+            background: url({% static 'img/대화2.PNG' %})no-repeat;
+        }
+        .chap_LV{
+            font-size: 30px;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <div id="re_chap">
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="go_before" value="go_before">chapter</button>
+        </form>
+    </div>
+
+    <div class="chapter_container">
+        <div class="chapter_header">{{user.get_username}}님 환영합니다!</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="chapterbox">
+                <div class="chap_line">
+                    <button type="submit" class="chap_LV" id="box1" name="lv1" value="1" formaction="chap_detail/chap_sentence"> LV. {{ chap_detail.InnerChapOne }}. 필수문장 학습 </button>
+                
+                    <button type="submit" class="chap_LV" id="box2" name="lv2" value="2" formaction="chap_detail/chap_sentence2"> LV. {{ chap_detail.InnerChapTwo }}. 핵심회화 </button>
+                    <!-- disabled="disabled" -->
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

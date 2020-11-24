@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    {{ object.text|truncatechars:10 }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <button type="button" class="btn btn-outline-primary btn-sm">
+                {{object.author.username}}</button>
+            <p class="update_counter" style="display: none;">{{ object.update_counter }}</p>
+            <br />
+            <p class="hits">조회 수 {{object.hit}}</p>
+
+            <p>{{object.text|linebreaksbr}}</p>
+            
+            
+            <a href="{% url 'QnA:QnA_delete' pk=object.id %}" class="btn btn-outline-danger btn-sm float-right">
+                    Delete</a>
+            <a href="{% url 'QnA:QnA_update' pk=object.id %}" class="btn btn-outline-success btn-sm float-right">
+                    Update</a>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            {% load disqus_tags %}
+            {% disqus_show_comments %}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+{% endblock %}

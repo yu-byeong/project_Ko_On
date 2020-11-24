@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %} -main {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log-in page</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+    <div class="chapter_container" style="padding-bottom: 50px;">
+        <img src="{% static 'img/KS.jpg' %}" style="opacity: 0.3; top:0; position: absolute; z-index: 1;">
+    {% if user.is_authenticated %}
+        <div class="chapter_header" style=" z-index: 5;">Welcome, {{user.get_username}}</div>
+        <form id = "Start Learning" method="POST" style="z-index: 5;">
+            {% csrf_token %}
+            <h2>Please select a language.</h2>
+            <label for="trans_lang_option" style="font-size: 18px;">Language : </label>
+            <select name="trans_lang_option" style="height: 30px;">
+                <option> 언어를 선택해주세요. </option>
+                <option value="vi">vietnam 베트남어</option>
+                <option value="zh-CN">chinese 중국어</option>
+                <option value="en">English 영어</option>
+            </select>
+            <button type="submit" name="chapter" formaction="{% url 'main_app:chapter' %}">Start Learning</button>
+        </form>
+    {% else %}
+    <h1  style="z-index: 5;">You must log in to use the service</h1>
+    {% endif %}
+    </div>
+</body>
+</html>
+
+{% endblock %}

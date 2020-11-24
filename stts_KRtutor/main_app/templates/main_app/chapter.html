@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %} -chapter {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chapter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .box#box1{
+            background: url({% static 'img/환불 이미지_1.PNG' %})no-repeat;
+        }
+        .box#box2{
+            background: url({% static 'img/식당 이미지_1.PNG' %})no-repeat;
+        }
+        .box#box3{
+            background: url({% static 'img/경찰 이미지_1.PNG' %})no-repeat;
+        }
+        .box#box4{
+            background: url({% static 'img/구급대원 이미지_1.PNG' %})no-repeat;
+        }
+        .box#box5{
+            background: url({% static 'img/택시 이미지_1.PNG' %})no-repeat;
+        }
+        .box#box6{
+            background: url({% static 'img/보이스피싱 이미지_1.PNG' %})no-repeat;
+        }
+
+        .box#box1:hover{
+            background: url({% static 'img/환불 이미지.PNG' %})no-repeat;
+        }
+        .box#box2:hover{
+            background: url({% static 'img/식당 이미지.PNG' %})no-repeat;
+        }
+        .box#box3:hover{
+            background: url({% static 'img/경찰 이미지.PNG' %})no-repeat;
+        }
+        .box#box4:hover{
+            background: url({% static 'img/구급대원 이미지.PNG' %})no-repeat;
+        }
+        .box#box5:hover{
+            background: url({% static 'img/택시 이미지.PNG' %})no-repeat;
+        }
+        .box#box6:hover{
+            background: url({% static 'img/보이스피싱 이미지.PNG' %})no-repeat;
+        }
+
+        .box{
+            font-size: 30px;
+            font-weight: bolder;
+            flex-direction: column;
+        }
+        .crown{
+            margin-top: -60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chapter_container">
+        <div class="chapter_header">{{user.get_username}}님 환영합니다!</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="chapterbox" style="height: 1700px;">
+                <!-- 버튼 세로 나열 -->
+                <div class="chap_line">
+                    <button type="submit" class="box" id="box1" formaction="{% url 'main_app:chap_detail' 1 %}">
+                    {% if chap_check.0 %}
+                        <img src="{% static 'img/crown.png' %}" class="crown">
+                    {% endif %}
+                    {{kr_trans_list.0.0}}. {{kr_trans_list.0.1}} {{kr_trans_list.0.2}}
+                    </button>
+
+                    <button type="submit" class="box" id="box2" formaction="{% url 'main_app:chap_detail' 2 %}">
+                    {% if chap_check.1 %}    
+                        <img src="{% static 'img/crown.png' %}" class="crown">
+                    {% endif %}
+                        {{kr_trans_list.1.0}}. {{kr_trans_list.1.1}} {{kr_trans_list.1.2}}
+                    </button>
+                    
+                    <button type="submit" class="box" id="box3" formaction="{% url 'main_app:chap_detail' 3 %}">
+                    {% if chap_check.2 %}  
+                        <img src="{% static 'img/crown.png' %}" class="crown">
+                    {% endif %}
+                        {{kr_trans_list.2.0}}. {{kr_trans_list.2.1}} {{kr_trans_list.2.2}}
+                    </button>
+                    
+                    <button type="submit" class="box" id="box4" formaction="{% url 'main_app:chap_detail' 4 %}">
+                    {% if chap_check.3 %}    
+                        <img src="{% static 'img/crown.png' %}" class="crown">
+                    {% endif %}
+                        {{kr_trans_list.3.0}}. {{kr_trans_list.3.1}} {{kr_trans_list.3.2}}
+                    </button>
+                    
+                    <button type="submit" class="box" id="box5" formaction="{% url 'main_app:chap_detail' 5 %}">
+                    {% if chap_check.4 %}
+                        <img src="{% static 'img/crown.png' %}" class="crown">
+                    {% endif %}
+                        {{kr_trans_list.4.0}}. {{kr_trans_list.4.1}} {{kr_trans_list.4.2}}
+                    </button>
+                    
+                    <button type="submit" class="box" id="box6" formaction="{% url 'main_app:chap_detail' 6 %}">
+                    {% if chap_check.5 %}
+                        <img src="{% static 'img/crown.png' %}" class="crown">
+                    {% endif %}
+                        {{kr_trans_list.5.0}}. {{kr_trans_list.5.1}} {{kr_trans_list.5.2}}
+                    </button>
+
+                </div>
+               
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+{% endblock %}
